@@ -1,0 +1,110 @@
+interactions:
+- request:
+    body: {grant_type: password, password: dummy, username: dummy}
+    headers:
+      User-Agent: [CurbEnergy-RestApiClient/0.0.1]
+    method: POST
+    uri: https://app.energycurb.com/oauth2/token
+  response:
+    body: {string: "{\n    \"status\": \"401 Unauthorized\",\n    \"code\": 401,\n
+        \   \"explanation\": \"This server could not verify that you are authorized
+        to access the document you requested.  Either you supplied the wrong credentials
+        (e.g., bad password), or your browser does not understand how to supply the
+        credentials required.\",\n    \"detail\": \"{'error': 'invalid_client', 'error_description':
+        'Username and password are invalid.'}\"\n}\n\n"}
+    headers:
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Headers]
+      : Authorization, Content-Type, Content-Length, X-Requested-With, Accept, Client-Version
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Methods]
+      : GET,POST,PUT,DELETE
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Origin]
+      : '*'
+      ? !!python/object/new:multidict._multidict.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._multidict.istr [Content-Length]
+      : '413'
+      ? !!python/object/new:multidict._multidict.istr [Content-Type]
+      : aplication/json; charset=UTF-8
+      ? !!python/object/new:multidict._multidict.istr [Date]
+      : Fri, 14 Apr 2017 17:35:20 GMT
+      ? !!python/object/new:multidict._multidict.istr [Server]
+      : nginx/1.10.0
+    status: {code: 401, message: Unauthorized}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [https, app.energycurb.com, /oauth2/token,
+        '', '']
+      - false
+- request:
+    body: {grant_type: password, password: dummy, username: dummy}
+    headers:
+      User-Agent: [CurbEnergy-RestApiClient/0.0.1]
+    method: POST
+    uri: https://app.energycurb.com/oauth2/token
+  response:
+    body: {string: "{\n    \"status\": \"401 Unauthorized\",\n    \"code\": 401,\n
+        \   \"explanation\": \"This server could not verify that you are authorized
+        to access the document you requested.  Either you supplied the wrong credentials
+        (e.g., bad password), or your browser does not understand how to supply the
+        credentials required.\",\n    \"detail\": \"{'error': 'invalid_client', 'error_description':
+        'Username and password are invalid.'}\"\n}\n\n"}
+    headers:
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Headers]
+      : Authorization, Content-Type, Content-Length, X-Requested-With, Accept, Client-Version
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Methods]
+      : GET,POST,PUT,DELETE
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Origin]
+      : '*'
+      ? !!python/object/new:multidict._multidict.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._multidict.istr [Content-Length]
+      : '413'
+      ? !!python/object/new:multidict._multidict.istr [Content-Type]
+      : aplication/json; charset=UTF-8
+      ? !!python/object/new:multidict._multidict.istr [Date]
+      : Fri, 14 Apr 2017 17:59:10 GMT
+      ? !!python/object/new:multidict._multidict.istr [Server]
+      : nginx/1.10.0
+    status: {code: 401, message: Unauthorized}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [https, app.energycurb.com, /oauth2/token,
+        '', '']
+      - false
+- request:
+    body: {grant_type: password, password: other, username: other}
+    headers:
+      User-Agent: [CurbEnergy-RestApiClient/0.0.1]
+    method: POST
+    uri: https://app.energycurb.com/oauth2/token
+  response:
+    body: {string: "{\n    \"status\": \"401 Unauthorized\",\n    \"code\": 401,\n
+        \   \"explanation\": \"This server could not verify that you are authorized
+        to access the document you requested.  Either you supplied the wrong credentials
+        (e.g., bad password), or your browser does not understand how to supply the
+        credentials required.\",\n    \"detail\": \"{'error': 'invalid_client', 'error_description':
+        'Username and password are invalid.'}\"\n}\n\n"}
+    headers:
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Headers]
+      : Authorization, Content-Type, Content-Length, X-Requested-With, Accept, Client-Version
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Methods]
+      : GET,POST,PUT,DELETE
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Origin]
+      : '*'
+      ? !!python/object/new:multidict._multidict.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._multidict.istr [Content-Length]
+      : '413'
+      ? !!python/object/new:multidict._multidict.istr [Content-Type]
+      : aplication/json; charset=UTF-8
+      ? !!python/object/new:multidict._multidict.istr [Date]
+      : Fri, 14 Apr 2017 17:59:28 GMT
+      ? !!python/object/new:multidict._multidict.istr [Server]
+      : nginx/1.10.0
+    status: {code: 401, message: Unauthorized}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [https, app.energycurb.com, /oauth2/token,
+        '', '']
+      - false
+version: 1

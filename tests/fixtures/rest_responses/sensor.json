@@ -1,0 +1,9 @@
+{
+  "_links": {
+    "self": {
+      "href": "/api/sensors/1000"
+    }
+  },
+  "arbitrary_name": "Home",
+  "name": "abcdefgh"
+}

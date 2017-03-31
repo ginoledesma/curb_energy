@@ -1,0 +1,109 @@
+{
+  "_links": {
+    "self": {
+      "href": "/api/profiles/1/registers",
+      "methods": [
+        "get",
+        "put"
+      ]
+    }
+  },
+  "registers": [
+    {
+      "flip_domain": false,
+      "id": "urn:energycurb:registers:curb:abcdefgh:0:a",
+      "label": "Main I",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": true,
+      "id": "urn:energycurb:registers:curb:abcdefgh:0:b",
+      "label": "Oven A",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": false,
+      "id": "urn:energycurb:registers:curb:abcdefgh:0:c",
+      "label": "Dryer A",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": false,
+      "id": "urn:energycurb:registers:curb:abcdefgh:0:d",
+      "label": "Washer",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": false,
+      "id": "urn:energycurb:registers:curb:abcdefgh:0:e",
+      "label": "Refrigerator",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": false,
+      "id": "urn:energycurb:registers:curb:abcdefgh:0:f",
+      "label": "Air Conditioner A",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": true,
+      "id": "urn:energycurb:registers:curb:abcdefgh:1:a",
+      "label": "Main II",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": true,
+      "id": "urn:energycurb:registers:curb:abcdefgh:1:b",
+      "label": "Oven B",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": true,
+      "id": "urn:energycurb:registers:curb:abcdefgh:1:c",
+      "label": "Dryer B",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": false,
+      "id": "urn:energycurb:registers:curb:abcdefgh:1:d",
+      "label": "Garbage Disposal",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": true,
+      "id": "urn:energycurb:registers:curb:abcdefgh:1:e",
+      "label": "Air Conditioner B",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": false,
+      "id": "urn:energycurb:registers:curb:abcdefgh:1:f",
+      "label": "Kitchen Lights",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": true,
+      "id": "urn:energycurb:registers:curb:abcdefgh:2:a",
+      "label": "Dining Lights",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": false,
+      "id": "urn:energycurb:registers:curb:abcdefgh:2:b",
+      "label": "III-B (Unknown)",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": true,
+      "id": "urn:energycurb:registers:curb:abcdefgh:3:a",
+      "label": "2F Outlets",
+      "multiplier": 1
+    },
+    {
+      "flip_domain": true,
+      "id": "urn:energycurb:registers:curb:abcdefgh:3:b",
+      "label": "Kitchen Outlets",
+      "multiplier": 1
+    }
+  ]
+}

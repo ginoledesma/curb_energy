@@ -1,0 +1,23 @@
+{
+  "_embedded": {
+    "sensors": [
+      {
+        "_links": {
+          "self": {
+            "href": "/api/sensors/1000"
+          }
+        },
+        "arbitrary_name": "Sensor Name",
+        "name": "abcdefgh"
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "/api/sensor_groups/100"
+    },
+    "token": {
+      "href": "/api/sensor_groups/100/token"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "_links": {
+    "self": {
+      "href": "/api/profiles/1/billing",
+      "methods": [
+        "get",
+        "put"
+      ]
+    }
+  },
+  "billing_day_of_month": 23,
+  "billing_model": {
+    "label": "703d2bda6f480864c78e34e08658c66b71297846",
+    "name": "E-1 - Baseline Region X",
+    "sector": "Residential",
+    "utility": "Pacific Gas & Electric Co"
+  },
+  "dollar_pkwh": 0.1500,
+  "zip_code": 95014
+}

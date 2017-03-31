@@ -1,0 +1,64 @@
+{
+    "_links": {
+        "days": {
+            "href": "/api/profiles/1/historical-data?granularity=1D",
+            "params": {
+                "since": {
+                    "limit": 1492042013.51065,
+                    "type": "timestamp"
+                },
+                "unit": {
+                    "choices": [
+                        "w",
+                        "$/hr"
+                    ],
+                    "type": "choices"
+                },
+                "until": {
+                    "type": "timestamp"
+                }
+            }
+        },
+        "hours": {
+            "href": "/api/profiles/1/historical-data?granularity=1H",
+            "params": {
+                "since": {
+                    "limit": 1492042013.5104833,
+                    "type": "timestamp"
+                },
+                "unit": {
+                    "choices": [
+                        "w",
+                        "$/hr"
+                    ],
+                    "type": "choices"
+                },
+                "until": {
+                    "type": "timestamp"
+                }
+            }
+        },
+        "minutes": {
+            "href": "/api/profiles/1/historical-data?granularity=1T",
+            "params": {
+                "since": {
+                    "limit": 1492042013.5103014,
+                    "type": "timestamp"
+                },
+                "unit": {
+                    "choices": [
+                        "w",
+                        "$/hr"
+                    ],
+                    "type": "choices"
+                },
+                "until": {
+                    "type": "timestamp"
+                }
+            }
+        },
+        "self": {
+            "href": "/api/profiles/1/historical"
+        }
+    }
+}

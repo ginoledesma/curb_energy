@@ -1,0 +1,37 @@
+{
+    "_embedded": {
+        "sensor_groups": [
+            {
+                "_embedded": {
+                    "sensors": [
+                        {
+                            "_links": {
+                                "self": {
+                                    "href": "/api/sensors/1000"
+                                }
+                            },
+                            "arbitrary_name": "Home",
+                            "name": "abcdefgh"
+                        }
+                    ]
+                },
+                "_links": {
+                    "self": {
+                        "href": "/api/sensor_groups/200"
+                    },
+                    "token": {
+                        "href": "/api/sensor_groups/200/token"
+                    }
+                }
+            }
+        ]
+    },
+    "_links": {
+        "self": {
+            "href": "/api/devices/10"
+        }
+    },
+    "building_type": "home",
+    "name": "Home",
+    "timezone": "America/Los_Angeles"
+}

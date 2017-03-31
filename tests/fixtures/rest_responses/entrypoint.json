@@ -1,0 +1,13 @@
+{
+  "_links": {
+    "devices": {
+      "href": "/api/user/1/devices"
+    },
+    "profiles": {
+      "href": "/api/user/1/profiles"
+    },
+    "self": {
+      "href": "/api"
+    }
+  }
+}

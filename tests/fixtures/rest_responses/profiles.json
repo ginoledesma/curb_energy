@@ -1,0 +1,288 @@
+{
+  "_embedded": {
+    "profiles": [
+      {
+        "_embedded": {
+          "billing": {
+            "_links": {
+              "self": {
+                "href": "/api/profiles/1/billing",
+                "methods": [
+                  "get",
+                  "put"
+                ]
+              }
+            },
+            "billing_day_of_month": 23,
+            "billing_model": {
+              "label": "703d2bda6f480864c78e34e08658c66b71297846",
+              "name": "E-1 - Baseline Region X",
+              "sector": "Residential",
+              "utility": "Pacific Gas & Electric Co"
+            },
+            "dollar_pkwh": 0.1500,
+            "zip_code": 95014
+          },
+          "registers": {
+            "_links": {
+              "self": {
+                "href": "/api/profiles/1/registers",
+                "methods": [
+                  "get",
+                  "put"
+                ]
+              }
+            },
+            "registers": [
+              {
+                "flip_domain": false,
+                "id": "urn:energycurb:registers:curb:abcdefgh:0:a",
+                "label": "Main I",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": true,
+                "id": "urn:energycurb:registers:curb:abcdefgh:0:b",
+                "label": "Oven A",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": true,
+                "id": "urn:energycurb:registers:curb:abcdefgh:0:c",
+                "label": "Dryer A",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": false,
+                "id": "urn:energycurb:registers:curb:abcdefgh:0:d",
+                "label": "Washer",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": false,
+                "id": "urn:energycurb:registers:curb:abcdefgh:0:e",
+                "label": "Kitchen Appliances",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": false,
+                "id": "urn:energycurb:registers:curb:abcdefgh:0:f",
+                "label": "Air Conditioner A",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": true,
+                "id": "urn:energycurb:registers:curb:abcdefgh:1:a",
+                "label": "Main II",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": true,
+                "id": "urn:energycurb:registers:curb:abcdefgh:1:b",
+                "label": "Oven B",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": true,
+                "id": "urn:energycurb:registers:curb:abcdefgh:1:c",
+                "label": "Dryer B",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": false,
+                "id": "urn:energycurb:registers:curb:abcdefgh:1:d",
+                "label": "Garbage Disposal",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": true,
+                "id": "urn:energycurb:registers:curb:abcdefgh:1:e",
+                "label": "Air Conditioner B",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": false,
+                "id": "urn:energycurb:registers:curb:abcdefgh:1:f",
+                "label": "Kitchen Lights",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": true,
+                "id": "urn:energycurb:registers:curb:abcdefgh:2:a",
+                "label": "Dining Lights",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": false,
+                "id": "urn:energycurb:registers:curb:abcdefgh:2:b",
+                "label": "III-B (Unknown)",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": false,
+                "id": "urn:energycurb:registers:curb:abcdefgh:2:c",
+                "label": "(unnamed III - C)",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": true,
+                "id": "urn:energycurb:registers:curb:abcdefgh:3:a",
+                "label": "2F Outlets",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": true,
+                "id": "urn:energycurb:registers:curb:abcdefgh:3:b",
+                "label": "Kitchen Outlets",
+                "multiplier": 1
+              },
+              {
+                "flip_domain": false,
+                "id": "urn:energycurb:registers:curb:abcdefgh:3:c",
+                "label": "(unnamed III - F)",
+                "multiplier": 1
+              }
+            ]
+          }
+        },
+        "_links": {
+          "device": {
+            "href": "/api/devices/1151"
+          },
+          "historical": {
+            "href": "/api/profiles/1/historical"
+          },
+          "self": {
+            "href": "/api/profiles/1"
+          }
+        },
+        "display_name": "Home",
+        "id": 1,
+        "real_time": [
+          {
+            "_links": {
+              "ws": {
+                "href": "wss://abcdefgh:c7bfca30f1c74b92a64c47c4faabc144@mqtt-web.energycurb.com:443"
+              }
+            },
+            "format": "curb",
+            "prefix": "urn:energycurb:registers:curb:abcdefgh",
+            "topic": "curb/abcdefgh/active"
+          }
+        ],
+        "register_groups": {
+          "grid": [
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:0:a",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:1:a",
+              "multiplier": 1
+            }
+          ],
+          "normals": [
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:1:c",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:0:b",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:2:b",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:1:f",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:0:f",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:3:b",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:2:c",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:0:c",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:1:d",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:0:d",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:1:b",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:2:a",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:1:e",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:3:a",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:3:c",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:0:e",
+              "multiplier": 1
+            }
+          ],
+          "solar": [],
+          "use": [
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:0:a",
+              "multiplier": 1
+            },
+            {
+              "id": "urn:energycurb:registers:curb:abcdefgh:1:a",
+              "multiplier": 1
+            }
+          ]
+        },
+        "widgets": [
+          {
+            "config": null,
+            "type": "usage"
+          },
+          {
+            "config": null,
+            "type": "bill"
+          },
+          {
+            "config": null,
+            "type": "energy"
+          },
+          {
+            "config": null,
+            "type": "smartthings"
+          }
+        ]
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "/api/user/1/profiles"
+    }
+  }
+}
