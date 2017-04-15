@@ -131,11 +131,17 @@ async def main(args: argparse.Namespace, event_loop: asyncio.AbstractEventLoop):
     clients = []
     l = event_loop if event_loop is not None else asyncio.get_event_loop()
 
-    async with RestApiClient(username=args.username, password=args.password,
+    async with RestApiClient(username=args.username,
+                             password=args.password,
+                             client_secret=args.client_secret,
+                             client_token=args.client_token,
                              loop=l) as client:
 
         if args.fetch_token:
             show_token(await client.fetch_access_token())
+
+        if args.refresh_token:
+            show_token(await client.refresh_access_token())
 
         if args.profiles:
             for profile in await client.profiles():
@@ -166,31 +172,52 @@ def get_parser() -> argparse.ArgumentParser:
     parser.add_argument('--password', help='Curb API password',
                         default=os.environ.get('CURB_PASSWORD'))
 
-    parser.add_argument('--client_id', help='Curb Client ID',
-                        default=os.environ.get('CURB_CLIENT_ID'))
-
     parser.add_argument('--client_token', help='Curb Client Token',
                         default=os.environ.get('CURB_CLIENT_TOKEN'))
 
-    parser.add_argument('--profiles', action='store_const', const=True)
-    parser.add_argument('--devices', action='store_const', const=True)
-    parser.add_argument('--fetch-token', action='store_const', const=True)
-    parser.add_argument('--historical-data', action='store_const', const=True)
+    parser.add_argument('--client_secret', help='Curb Client Secret',
+                        default=os.environ.get('CURB_CLIENT_SECRET'))
+
+    parser.add_argument('--profiles', action='store_const', const=True,
+                        help='Show the profile configuration')
+
+    parser.add_argument('--devices', action='store_const', const=True,
+                        help='Show the list of devices')
+
+    # Access Tokens
+    parser.add_argument('--fetch-token', action='store_const', const=True,
+                        help='Get and display the access token')
+
+    parser.add_argument('--refresh-token', action='store_const', const=True,
+                        help='Refresh the access token')
+
+    # Historical Data reporting
+    parser.add_argument('--historical-data', action='store_const', const=True,
+                        help='Display the historical data for the user')
+
     parser.add_argument('--granularity',
                         choices=[RestApiClient.PER_MIN,
                                  RestApiClient.PER_HOUR,
                                  RestApiClient.PER_DAY,
                                  ],
-                        default=RestApiClient.PER_HOUR)
-    parser.add_argument('--since', type=int, default=0)
-    parser.add_argument('--until', type=int, default=None)
+                        default=RestApiClient.PER_HOUR,
+                        help='Historical Data granularity')
+
+    parser.add_argument('--since', type=int, default=0,
+                        help='Historical data start date (in epoch)')
+    parser.add_argument('--until', type=int, default=None,
+                        help='Historical data end date (in epoch)')
+
     parser.add_argument('--unit',
                         choices=[RestApiClient.WATT,
                                  RestApiClient.DOLLAR_PER_HOUR],
-                        default=RestApiClient.WATT)
+                        default=RestApiClient.WATT,
+                        help='Historical data reporting unit')
     return parser
 
 
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main(get_parser().parse_args(), loop))
+    import vcr
+    with vcr.VCR(serializer='yaml').use_cassette('/tmp/x.yaml'):
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(main(get_parser().parse_args(), loop))

@@ -182,6 +182,7 @@ texinfo_documents = [
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3.6', None),
     'aiohttp': ('http://aiohttp.readthedocs.io/en/stable/', None),
+    'hbmqtt': ('http://hbmqtt.readthedocs.io/en/latest/', None),
 }
 
 
