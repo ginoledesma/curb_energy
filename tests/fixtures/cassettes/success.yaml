@@ -6,9 +6,8 @@ interactions:
     method: POST
     uri: https://app.energycurb.com/oauth2/token
   response:
-    body: {string: '{"token_type": "bearer", "refresh_token": "31de9f7d766287c7565801f30babbd4f",
-        "access_token": "99af34fcaf6a365a85782d5be273c4f31901cffe", "expires_in":
-        2592000, "user_id": 5050}'}
+    body: {string: '{"token_type": "bearer", "refresh_token": "XXXXXXXX",
+        "access_token": "YYYYYYYY", "expires_in": 2592000, "user_id": 5050}'}
     headers:
       ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Headers]
       : Authorization, Content-Type, Content-Length, X-Requested-With, Accept, Client-Version
@@ -43,7 +42,7 @@ interactions:
 - request:
     body: null
     headers:
-      Authorization: [Bearer 0ccbb0beb4718677f4eade0553fb4abbbc6d0b92==]
+      Authorization: [Bearer 0123456789ABCDEF==]
       User-Agent: [CurbEnergy-RestApiClient/0.0.1]
     method: GET
     uri: https://app.energycurb.com/api
@@ -80,7 +79,7 @@ interactions:
 - request:
     body: null
     headers:
-      Authorization: [Bearer 0ccbb0beb4718677f4eade0553fb4abbbc6d0b92==]
+      Authorization: [Bearer 0123456789ABCDEF==]
       User-Agent: [CurbEnergy-RestApiClient/0.0.1]
     method: GET
     uri: https://app.energycurb.com/api/user/5050/profiles
@@ -168,7 +167,7 @@ interactions:
 - request:
     body: null
     headers:
-      Authorization: [Bearer 0ccbb0beb4718677f4eade0553fb4abbbc6d0b92==]
+      Authorization: [Bearer 0123456789ABCDEF==]
       User-Agent: [CurbEnergy-RestApiClient/0.0.1]
     method: GET
     uri: https://app.energycurb.com/api/user/5050/devices
@@ -209,7 +208,7 @@ interactions:
 - request:
     body: null
     headers:
-      Authorization: [Bearer 0ccbb0beb4718677f4eade0553fb4abbbc6d0b92==]
+      Authorization: [Bearer 0123456789ABCDEF==]
       User-Agent: [CurbEnergy-RestApiClient/0.0.1]
     method: GET
     uri: https://app.energycurb.com/api/profiles/5050/historical-data?granularity=1H&unit=w&since=0
@@ -3949,5 +3948,45 @@ interactions:
       state: !!python/tuple
       - !!python/object/new:urllib.parse.SplitResult [https, app.energycurb.com, /api/profiles/5050/historical-data,
         granularity=1H&unit=w&since=0, '']
+      - false
+- request:
+    body: {grant_type: refresh_token, refresh_token: XXXXXXXX, user_id: 1092}
+    headers:
+      User-Agent: [CurbEnergy-RestApiClient/0.0.2]
+    method: POST
+    uri: https://app.energycurb.com/oauth2/token
+  response:
+    body: {string: '{"token_type": "bearer", "refresh_token": "ZZZZZZZZ",
+        "access_token": "AAAAAAAA", "expires_in": 2592000, "user_id": 5050}'}
+    headers:
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Headers]
+      : Authorization, Content-Type, Content-Length, X-Requested-With, Accept, Client-Version
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Methods]
+      : GET,POST,PUT,DELETE
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Origin]
+      : '*'
+      ? !!python/object/new:multidict._multidict.istr [Cache-Control]
+      : no-store
+      ? !!python/object/new:multidict._multidict.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._multidict.istr [Content-Encoding]
+      : gzip
+      ? !!python/object/new:multidict._multidict.istr [Content-Length]
+      : '185'
+      ? !!python/object/new:multidict._multidict.istr [Content-Type]
+      : application/json; charset=UTF-8
+      ? !!python/object/new:multidict._multidict.istr [Date]
+      : Sat, 15 Apr 2017 23:04:21 GMT
+      ? !!python/object/new:multidict._multidict.istr [Pragma]
+      : no-cache
+      ? !!python/object/new:multidict._multidict.istr [Server]
+      : nginx/1.10.0
+      ? !!python/object/new:multidict._multidict.istr [Vary]
+      : Accept-Encoding
+    status: {code: 200, message: OK}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [https, app.energycurb.com, /oauth2/token,
+        '', '']
       - false
 version: 1

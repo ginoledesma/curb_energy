@@ -2,7 +2,6 @@
 Client module for interacting with the Curb REST and Real-Time APIs
 """
 
-
 import aiohttp
 import asyncio
 import base64
@@ -11,12 +10,13 @@ import curb_energy
 import json
 import logging
 import pytz
+import ssl
 import sys
 from collections import namedtuple
 from typing import Callable
 from typing import Dict
 from typing import List
-from typing import Union
+from typing import Optional
 from datetime import datetime
 from datetime import timedelta
 from curb_energy import schema
@@ -29,8 +29,6 @@ from hbmqtt.errors import MQTTException
 
 
 __all__ = [
-    'OAUTH_CLIENT_TOKEN',
-    'OAUTH_CLIENT_ID',
     'AuthToken',
     'RestApiClient',
     'RealTimeClient',
@@ -42,8 +40,8 @@ logger = logging.getLogger(__name__)
 
 # You will need to obtain an OAuth client token for your specific application
 # See <http://docs.energycurb.com/authentication.html> for info on obtaining one
-OAUTH_CLIENT_ID = "CHANGE_ME"
 OAUTH_CLIENT_TOKEN = "CHANGE_ME"
+OAUTH_CLIENT_SECRET = "CHANGE_ME"
 
 
 def now() -> datetime:
@@ -64,7 +62,7 @@ class AuthToken(object):
                  access_token: str=None,
                  refresh_token: str=None,
                  expires_in: int=0,
-                 user_id: str=None,
+                 user_id: int=0,
                  token_type: str='bearer'):
         """
         Create an :class:`AuthToken` instance.
@@ -282,9 +280,7 @@ class RealTimeClient(object):
 
 class RestApiClient(object):
     """
-    A client for the Curb REST API
-
-    See: http://docs.energycurb.com/
+    A client for the `Curb REST API <http://docs.energycurb.com/>`_
     """
     API_URL = "https://app.energycurb.com"
     USER_AGENT = 'CurbEnergy-RestApiClient/' + curb_energy.__version__
@@ -303,26 +299,46 @@ class RestApiClient(object):
                  password: str = None,
                  auth_token: AuthToken = None,
                  api_url: str = API_URL,
-                 session: aiohttp.ClientSession=None,
-                 ssl_context=None):
+                 client_token: str = OAUTH_CLIENT_TOKEN,
+                 client_secret: str = OAUTH_CLIENT_SECRET,
+                 ssl_context: ssl.SSLContext = None):
         """
         Initialize the REST API client.
 
         The Curb API uses Oauth2 authentication. An access token can be fetched
         by supplying a valid username and password as credentials. Subsequent
-        authentication with the API will be done using the Oauth2 token.
+        authentication with the API will be done using the Oauth2 token in 
+        the form of :class:`~curb_energy.client.AuthToken`.
+        
+        You can also pass an existing token instead of a username/password.
 
         :param username: Username
         :param password: Password
         :param auth_token: Oauth2 client token
-        :param session: existing async I/O HTTP session
         :param api_url: The URL to the Curb REST API
+        :param client_token: The application client token (app identifier)
+        :param client_secret: The application client secret (app password)
+        :param ssl_context: Optional SSL
+
+        .. warning::
+        
+            As a client to the Curb REST API, you **MUST** provide your own 
+            client_token and client_secret which identifies the *APPLICATION* 
+            you are developing. This is separate from the username/password 
+            or access token that identifies the *USER* accessing their data.
+            
+            See <http://docs.energycurb.com/authentication.html> for more info.
+            You'll need to contact the Curb Support Team at 
+            <http://energycurb.com/support/> for assistance.
         
         Example:
         
         .. code-block:: python
         
-            async with RestApiClient(username=user, password=pass) as client:
+            async with RestApiClient(username=user,
+                                     password=pass, 
+                                     client_token='CHANGE_ME', 
+                                     client_secret='CHANGE_ME') as client:
                 profiles = await client.profiles()
                 devices = await client.devices()
 
@@ -336,9 +352,13 @@ class RestApiClient(object):
         
         .. code-block:: python
 
-            client = RestApiClient(username=user, password=pass)
+            client = RestApiClient(username=user,
+                                   password=pass, 
+                                   client_token='CHANGE_ME',
+                                   client_secret='CHANGE_ME')
             try:
-                await client.login()
+                # Fetch and set the access token
+                await client.authenticate()
                 
                 # code goes here
                 
@@ -346,12 +366,11 @@ class RestApiClient(object):
                 await client.session.close()            
 
         """
-
-
-
         self.api_url = api_url
         self.auth_username = username
         self.auth_password = password
+        self.client_token = client_token
+        self.client_secret = client_secret
         self._auth_token = auth_token
         self._loop = loop
         self._entry_point = None
@@ -392,36 +411,41 @@ class RestApiClient(object):
     def session(self) -> aiohttp.ClientSession:
         return self._session
 
-    async def login(self) -> AuthToken:
+    async def authenticate(self) -> AuthToken:
         """
         Authenticates with the REST API by fetching an access token, raising 
-        an exception on failure. The access token is stored as a property.
+        an exception on failure. The access token is stored as a property. 
+        This method is automatically called when the client is used as a 
+        context manager.
 
         :returns: The authentication token
-        :raises: CurbCurbBaseException
+        :raises: :class:`~curb_energy.errors.CurbBaseException`
         """
-        token = await self.fetch_access_token() if not self.auth_token else \
-            self.auth_token
+        token = self._auth_token
+        if token is None:
+            token = await self.fetch_access_token()
 
-        if not token:
+        elif not token.is_valid:
+            token = await self.refresh_access_token()
+
+        if not (token and token.is_valid):
             raise CurbBaseException("Authentication Error")
 
         self._auth_token = token
-        self._entry_point = await self._fetch(schema.EntryPointSchema,
-                                              self._make_url("/api"))
         return self.auth_token
 
     async def fetch_access_token(self,
-                                 client_id: str=OAUTH_CLIENT_ID,
-                                 client_token: str=OAUTH_CLIENT_TOKEN,
+                                 client_token: str=None,
+                                 client_secret: str=None,
                                  username: str=None,
-                                 password: str=None) \
-            -> Union[AuthToken, None]:
+                                 password: str=None) -> Optional[AuthToken]:
         """
-        Fetches an access token, or None if the authentication failed
-
-        :param client_id: The OAuth Client ID
-        :param client_token: The OAuth Client Token
+        Fetches an access token using the given credentials. The supplied 
+        parameters override the original credentials passed to instance of 
+        the REST API client.
+        
+        :param client_token: The OAuth Client Token (app identifier)
+        :param client_secret: The OAuth Client Secret (app password)
         :param username: The username to authenticate with
         :param password: The password to authenticate with
         :returns: Returns the access token after authentication
@@ -434,7 +458,10 @@ class RestApiClient(object):
             'password': password or self.auth_password,
         }
 
-        auth = aiohttp.BasicAuth(client_id, password=client_token)
+        _token = client_token if client_token else self.client_token
+        _secret = client_secret if client_secret else self.client_secret
+
+        auth = aiohttp.BasicAuth(_token, password=_secret)
         async with self._session.post(url, data=payload, auth=auth) as response:
             if response.status != 200:
                 logger.warning("Unsuccessful request: {}".format(response.text))
@@ -442,15 +469,65 @@ class RestApiClient(object):
 
         return AuthToken(**await response.json())
 
+    async def refresh_access_token(self) -> AuthToken:
+        """
+        Get a new access token using an existing refresh token and associated 
+        user ID. All other access tokens are immediately invalidated. When 
+        calling this method, 
+        :attr:`~curb_energy.client.RestApiClient.auth_token` is automatically 
+        set to the new token. 
+
+        :return: a new access token
+        :raises: :class:`~curb_energy.errors.CurbBaseException` when 
+                 :attr:`~curb_energy.client.RestApiClient.auth_token` is not set
+        """
+        if self.auth_token is None:
+            raise CurbBaseException("No existing auth token")
+
+        url = self._make_url("/oauth2/token")
+
+        payload = {
+            'grant_type': 'refresh_token',
+            'refresh_token': self.auth_token.refresh_token,
+            'user_id': self.auth_token.user_id,
+        }
+
+        auth = aiohttp.BasicAuth(self.client_token, password=self.client_secret)
+        async with self._session.post(url, data=payload, auth=auth) as response:
+            if response.status != 200:
+                logger.warning("Unsuccessful request: {}".format(response.text))
+                return
+
+        token = AuthToken(**await response.json())
+
+        # Refreshing tokens automatically invalidates older tokens, requiring
+        # us to use the new token effective immediately.
+        self._auth_token = token
+        return token
+
+    async def entry_point(self) -> Dict:
+        """
+        Return the resources the authenticated user has access to, namely 
+        Profiles and Devices. This is automatically called when the client is
+        used as a context manager.
+        
+        :return: a dict of links to the Profiles and Devices 
+        """
+        self._entry_point = await self._fetch(schema.EntryPointSchema,
+                                              self._make_url("/api"))
+        return self._entry_point
+
     async def profiles(self) -> List[models.Profile]:
         """
         Return a list of profiles associated with the authenticated user.
         
         :returns: A list of profiles
         """
-        return await self._fetch(
-            schema.ProfilesSchema,
-            self._make_url(self._entry_point['profiles']['href']))
+        if not self._entry_point:
+            await self.entry_point()
+
+        url = self._make_url(self._entry_point['profiles']['href'])
+        return await self._fetch(schema.ProfilesSchema, url)
 
     async def devices(self) -> List[models.Device]:
         """
@@ -458,9 +535,11 @@ class RestApiClient(object):
 
         :returns: A list of devices
         """
-        container = await self._fetch(
-            schema.DevicesSchema,
-            self._make_url(self._entry_point['devices']['href']))
+        if not self._entry_point:
+            await self.entry_point()
+
+        url = self._make_url(self._entry_point['devices']['href'])
+        container = await self._fetch(schema.DevicesSchema, url)
         return container['devices']
 
     async def historical_data(self,
@@ -479,7 +558,6 @@ class RestApiClient(object):
                       indicate the beginning, which is the default. 
         :param until: End time of measurements (in epoch format) 
         """
-
         url = self._make_url('/api/profiles/%d/historical-data' % profile_id)
         params = dict(granularity=granularity, unit=unit, since=since)
 
@@ -490,10 +568,15 @@ class RestApiClient(object):
 
     async def __aenter__(self):
         """
-        Automatically login when used as a context-manager
+        Automatically fetch an access token when used as a context-manager if
+        no access token was provided (or if it is already expired)
         """
+        if self.auth_token and self.auth_token.is_valid:
+            return self
+
         try:
-            await self.login()
+            await self.authenticate()
+            await self.entry_point()
         except:
             await self.__aexit__(*sys.exc_info())
             raise
@@ -508,7 +591,7 @@ class RestApiClient(object):
 
     async def _fetch(self, schema_class: schema.BaseSchema,
                      url: str,
-                     params: dict=None) -> Union[models.BaseModel, None]:
+                     params: dict=None) -> Optional[models.BaseModel]:
         """
         Helper function to fetch the REST resource of type schema_class at 
         the given URL
@@ -519,9 +602,14 @@ class RestApiClient(object):
         :return: An instance of the REST resource        
         :raises: IOError
         """
+        # Refresh our access token if it's expired
+        if not (self.auth_token and self.auth_token.is_valid):
+            await self.authenticate()
+
         async with self._session.get(url,
                                      headers=self._auth_headers(),
                                      params=params) as response:
+            logger.info(response.text)
             try:
                 data = await response.json()
             except json.decoder.JSONDecodeError as err:

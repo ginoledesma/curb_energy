@@ -12,6 +12,8 @@ curb_energy
 A Python library to interact with the `Curb API`_ built on top of `asyncio`_
 and `aiohttp`_.
 
+Documentation: http://curb-energy.readthedocs.io/en/latest/
+
 
 Disclaimer
 ==========
